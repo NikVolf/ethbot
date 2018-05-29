@@ -5,3 +5,11 @@ authors = ["NikVolf <nikvolf@gmail.com>"]
 
 [dependencies]
 ethbot-core = { path = "core" }
+ethbot-runner = { path = "runner" }
+
+[workspace]
+members = [
+    "./",
+    "runner",
+    "core"
+]

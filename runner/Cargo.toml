@@ -1,0 +1,11 @@
+[package]
+name = "ethbot-runner"
+version = "0.1.0"
+authors = ["NikVolf <nikvolf@gmail.com>"]
+
+[dependencies]
+parity-hash = "*"
+ethbot-core = { path = "../core" }
+web3 = { git = "https://github.com/tomusdrw/rust-web3" }
+
+[lib]
