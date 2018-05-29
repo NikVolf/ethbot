@@ -14,8 +14,23 @@ pub fn run_commands(commands: &[Command]) {
 				let balance = web3.eth().balance((*addr.clone()).into(), None).wait().expect("Failed JSON-RPC request");
 				println!("account '0x{:?}' balance: {}", addr, balance);
 			},
-			_ => {
+			Command::ShowTransaction(ref tx_hash) => {
+				let tx_hash: web3::types::H256 = (*tx_hash.clone()).into();
 
+				let tx = web3.eth().transaction(
+					web3::types::TransactionId::Hash(tx_hash)
+				).wait().expect("Failed JSON-RPC request");
+
+				if let Some(tx) = tx {
+					println!("transaction 0x{:?}: {:?}", tx_hash, tx);
+				} else {
+					let tx_receipt = web3.eth().transaction_receipt(tx_hash).wait().expect("Failed JSON-RPC request");
+					if let Some(tx_receipt) = tx_receipt {
+						println!("transaction receipt 0x{:?}: {:?}", tx_hash, tx_receipt);
+					} else {
+						println!("Nothing found");
+					}
+				}
 			}
 		}
 	}

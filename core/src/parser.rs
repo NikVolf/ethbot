@@ -11,7 +11,7 @@ pub fn process_query(query: Query) -> Vec<Command> {
 	match query {
 		Query::Plain(text) => {
 			if text.len() == 64 || text.len() == 66 {
-				let hash: H256 = text.parse().expect("Failed to parse hash");
+				let hash: H256 = without_0x(&text).parse().expect("Failed to parse hash");
 				commands.push(Command::ShowTransaction(hash));
 			} else if text.len() == 40 || text.len() == 42 {
 				let hash: Address = without_0x(&text).parse().expect("Failed to parse hash");
@@ -23,7 +23,7 @@ pub fn process_query(query: Query) -> Vec<Command> {
 			commands.push(Command::ShowAddressBalance(hash));
 		},
 		Query::Transaction(text) => {
-			let hash: H256 = text.parse().expect("Failed to parse hash");
+			let hash: H256 = without_0x(&text).parse().expect("Failed to parse hash");
 			commands.push(Command::ShowTransaction(hash));
 		}
 	}
