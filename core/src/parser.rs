@@ -16,6 +16,9 @@ pub fn process_query(query: Query) -> Vec<Command> {
 			} else if text.len() == 40 || text.len() == 42 {
 				let hash: Address = without_0x(&text).parse().expect("Failed to parse hash");
 				commands.push(Command::ShowAddressBalance(hash));
+			} else if text.len() < 10 {
+				let bn: u64 = text.parse().expect("Failed to parse block number");
+				commands.push(Command::ShowBlock(bn));
 			}
 		},
 		Query::Address(text) => {

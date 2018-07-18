@@ -4,4 +4,5 @@ use parity_hash::{H256, Address};
 pub enum Command {
 	ShowTransaction(H256),
 	ShowAddressBalance(Address),
+	ShowBlock(u64),
 }

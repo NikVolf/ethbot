@@ -3,6 +3,7 @@ extern crate web3;
 
 use core::Command;
 use web3::futures::Future;
+use web3::types::*;
 
 pub fn run_commands(commands: &[Command]) {
 	let (_eloop, transport) = web3::transports::Http::new("http://localhost:8545").unwrap();
@@ -17,9 +18,10 @@ pub fn run_commands(commands: &[Command]) {
 			Command::ShowTransaction(ref tx_hash) => {
 				let tx_hash: web3::types::H256 = (*tx_hash.clone()).into();
 
-				let tx = web3.eth().transaction(
-					web3::types::TransactionId::Hash(tx_hash)
-				).wait().expect("Failed JSON-RPC request");
+				let tx = web3.eth()
+					.transaction(TransactionId::Hash(tx_hash))
+					.wait()
+					.expect("Failed JSON-RPC request");
 
 				if let Some(tx) = tx {
 					println!("transaction 0x{:?}: {:?}", tx_hash, tx);
@@ -31,6 +33,14 @@ pub fn run_commands(commands: &[Command]) {
 						println!("Nothing found");
 					}
 				}
+			},
+			Command::ShowBlock(number) => {
+				let block = web3.eth()
+					.block(BlockId::Number(BlockNumber::Number(number)))
+					.wait()
+					.expect("Failed JSON-RPC request");
+
+				println!("block #{}: {:?}", number, block);
 			}
 		}
 	}
